@@ -18,10 +18,12 @@ class Dom {
       return this
     }
   
-    on() {
-  
+    on(eventType, callback) {
+        this.$el.addEventListener(eventType, callback);
     }
-  
+    off(eventType, callback){
+      this.$el.addEventListener(eventType, callback);
+    }
     append(node) {
       if (node instanceof Dom) {
         node = node.$el
@@ -42,9 +44,9 @@ class Dom {
   }
   
   $.create = (tagName, classes = '') => {
-    const el = document.createElement(tagName)
+    const el = document.createElement(tagName);
     if (classes) {
-      el.classList.add(classes)
+      el.classList.add(classes);
     }
     return $(el)
   }
