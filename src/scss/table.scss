@@ -18,6 +18,7 @@
 
   .row-info {
     display: flex;
+    position: relative;
     justify-content: center;
     align-items: center;
     min-width: $info-cell-width;
@@ -42,6 +43,7 @@
     border-top: 0;
     border-left: 0;
     height: 100%;
+    position: relative;
   }
 
   .cell {
@@ -61,6 +63,35 @@
       border: none;
       outline: 2px solid #3c74ff;
       z-index: 2;
+    }
+  }
+  .col-resize{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 4px;
+    background-color: #3c74ff;
+    opacity: 0;
+    
+    &:hover{
+      cursor: col-resize;
+      opacity: 1;
+    }
+  }
+
+  .row-resize{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #3c74ff;
+    opacity: 0;
+    
+    &:hover{
+      cursor: row-resize;
+      opacity: 1;
     }
   }
 
