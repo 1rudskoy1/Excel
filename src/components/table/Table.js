@@ -1,6 +1,8 @@
 import { ExcelComponent } from "../../core/ExcelComponent";
-import { createTable } from "./table.template";
 import {$} from '@core/dom.js'
+import { createTable } from "./table.template";
+import { TableSelection } from "./TableSelection";
+import {shouldResize, isCell} from "./table.functions" 
 
 export class Table extends ExcelComponent{
 
@@ -17,11 +19,18 @@ export class Table extends ExcelComponent{
         return createTable(6);
     }
 
-    onClick(){
-
+    prepare(){
+        this.selection = new TableSelection();
     }
+
+    init(){
+        super.init();
+        const $cell = this.$root.find('[data-id="0:0"]');
+        this.selection.select($cell);
+    }
+
     onMousedown(event){
-        if(event.target.dataset.resize){
+        if(shouldResize(event)){
             const $resizer = $(event.target);
             const $parent = $resizer.closest('[data-type = "resizable"]');
             const coords = $parent.getCoords();
@@ -64,7 +73,12 @@ export class Table extends ExcelComponent{
                 });
 
             }
+        }else if(isCell(event)) {
+            const $target = $(event.target);
+            this.selection.select($target);
         }
+
+
 
     }
     onMousemove(){
@@ -74,13 +88,3 @@ export class Table extends ExcelComponent{
 
     }
 }
-
-// 113 мс  Сценарии
-// 345 мс  Отрисовка
-// 126 мс  Отображение
-// 375 мс  Система
-
-//60 мс  Сценарии
-// 251 мс  Отрисовка
-// 87 мс  Отображение
-// 233 мс  Система
