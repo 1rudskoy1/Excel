@@ -3,6 +3,7 @@ import {$} from '@core/dom.js'
 import { createTable } from "./table.template";
 import { TableSelection } from "./TableSelection";
 import {shouldResize, isCell} from "./table.functions" 
+import {range} from "../../core/utils" 
 
 export class Table extends ExcelComponent{
 
@@ -75,16 +76,23 @@ export class Table extends ExcelComponent{
             }
         }else if(isCell(event)) {
             const $target = $(event.target);
-            this.selection.select($target);
+            if(event.shiftKey){
+                const target =  $target.id(true);
+                const current = this.selection.current.id(true);
+                
+                const cols = range(current.col, target.col);
+                const rows = range(current.row, target.row);
+
+                const ids = cols.reduce((acc, col) =>{
+                    rows.forEach(row => acc.push(`${row}:${col}`));
+                    return acc
+                }, []);
+
+                const $cells = ids.map(id => this.$root.find(`[data-id='${id}']`));
+                this.selection.selectGroup($cells);
+            }else{
+                this.selection.select($target);
+            }            
         }
-
-
-
-    }
-    onMousemove(){
-
-    }
-    onMouseapp(){
-
     }
 }
