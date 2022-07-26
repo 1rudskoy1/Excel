@@ -60,7 +60,10 @@ class Dom {
     css(styles = {}){
       Object.keys(styles).forEach(key => this.$el.style[key] = styles[key]);
     }
-
+    focus(){
+      this.$el.focus();
+      return this
+    }
     addClass(className){
       this.$el.classList.add(className);
     }
